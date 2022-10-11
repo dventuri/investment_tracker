@@ -25,25 +25,6 @@ class Papel:
         return qtd
 
 
-    # def compra(
-    #         self, quantidade: int, valor_unitario: str, liquidacao: Union[str,Decimal], negociacao: Union[str,Decimal],
-    #         corretagem: Union[str,Decimal], data: datetime) -> None:
-
-    #     self.__quantidade += quantidade
-    #     valor = Decimal(str(valor_unitario))
-
-    #     #negociacao 0,0050%
-    #     #liquidacao 0,0250%
-    #     # if automaticamente_calculado:
-    #     #     flag revisar taxas!
-
-
-    # def vende(self, quantidade: int) -> None:
-    #     self.__quantidade -= quantidade
-
-    #lista de operaçoes compra e venda
-
-
 class Operacao(ABC):
 
     def __init__(
