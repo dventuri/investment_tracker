@@ -14,13 +14,22 @@ class Papel:
     # constructor
     def __init__(self, nome: str) -> None:
         self._nome = nome.strip().upper()
-        self._quantidade = 0
         self._lista_de_compras = []
         self._lista_de_vendas = []
-        #TODO: check if exists
 
     def _checar_existencia_do_papel(self) -> bool:
         pass
+
+    @property
+    def quantidade(self) -> int:
+        qtd = 0
+        for compra in self._lista_de_compras:
+            print(compra)
+            qtd += compra.quantidade
+        for venda in self._lista_de_vendas:
+            qtd -= venda.quantidade
+        return qtd
+
 
     # def compra(
     #         self, quantidade: int, valor_unitario: str, liquidacao: Union[str,Decimal], negociacao: Union[str,Decimal],
@@ -57,6 +66,10 @@ class Operacao(ABC):
         self._valor_da_operacao = self.calcula_valor_da_operacao()
         self._preco_medio = self._valor_da_operacao/self._quantidade
 
+    @property
+    def quantidade(self) -> int:
+        return self._quantidade
+
     @abstractmethod
     def calcula_valor_da_operacao(self):
         pass
@@ -78,13 +91,21 @@ class Venda(Operacao):
 
     def calcula_valor_da_operacao(self):
         return self._valor_unitario*self._quantidade - self._taxas
+    
+    def executa_operacao(self):
+        self._papel._lista_de_vendas.append(self)
+        return
 
 
 if __name__ == "__main__":
 
     prio3 = Papel("prio3")
     print(prio3)
-    a = Compra(prio3,2,Decimal("30.00"),Decimal("0"),Decimal("0"),Decimal("4.5"),30)
+    a = Compra(prio3,10,Decimal("30.00"),Decimal("0"),Decimal("0"),Decimal("4.5"),30)
     print(prio3._lista_de_compras)
     a.executa_operacao()
     print(prio3._lista_de_compras)
+    print(prio3.quantidade)
+    b = Venda(prio3,3,Decimal("30.00"),Decimal("0"),Decimal("0"),Decimal("4.5"),30)
+    b.executa_operacao()
+    print(prio3.quantidade)
