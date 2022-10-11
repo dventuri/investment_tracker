@@ -14,23 +14,39 @@ class Papel:
     def _checar_existencia_do_papel(self) -> bool:
         pass
 
-    @property
-    def quantidade(self) -> int:
+    def _quantidade_comprada(self) -> int:
         qtd = 0
         for compra in self._lista_de_compras:
             qtd += compra.quantidade
+        return qtd
+
+    def _quantidade_vendida(self) -> int:
+        qtd = 0
         for venda in self._lista_de_vendas:
             qtd -= venda.quantidade
         return qtd
-    
+
+    def _valor_comprado(self) -> Decimal:
+        valor = 0
+        for compra in self._lista_de_compras:
+            valor += compra.valor_da_operacao
+        return valor
+
+    def _valor_vendido(self) -> Decimal:
+        valor = 0
+        for venda in self._lista_de_vendas:
+            valor += venda.valor_da_operacao
+        return valor
+
+    @property
+    def quantidade(self) -> int:
+        qtd = self._quantidade_comprada() - self._quantidade_vendida()
+        return qtd
+
     @property
     def preco_medio(self) -> Decimal:
-        valor_das_operacoes = 0
-        for compra in self._lista_de_compras:
-            valor_das_operacoes += compra.valor_da_operacao
-        # for venda in self._lista_de_vendas:
-        #     valor_das_operacoes -= venda.valor_da_operacao
-        return valor_das_operacoes/self.quantidade
+        preco = self._valor_comprado()/self._quantidade_comprada()
+        return preco
 
 
 class Operacao(ABC):
@@ -52,7 +68,7 @@ class Operacao(ABC):
     @property
     def quantidade(self) -> int:
         return self._quantidade
-    
+
     @property
     def valor_da_operacao(self) -> int:
         return self._valor_da_operacao
@@ -69,7 +85,7 @@ class Compra(Operacao):
 
     def calcula_valor_da_operacao(self):
         return self._valor_unitario*self._quantidade + self._taxas
-    
+
     def executa_operacao(self):
         self._papel._lista_de_compras.append(self)
         return
@@ -78,7 +94,7 @@ class Venda(Operacao):
 
     def calcula_valor_da_operacao(self):
         return self._valor_unitario*self._quantidade - self._taxas
-    
+
     def executa_operacao(self):
         self._papel._lista_de_vendas.append(self)
         return
