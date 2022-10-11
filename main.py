@@ -1,9 +1,3 @@
-# https://www.alura.com.br/artigos/formatando-moeda-no-python
-# https://alasco.tech/2020/01/31/handling-money-and-taxes-in-python.html
-# https://docs.python.org/3/library/decimal.html
-# https://docs.python.org/pt-br/3/library/datetime.html
-
-# from ctypes import Union
 from abc import ABC, abstractmethod
 from decimal import Decimal
 import datetime
