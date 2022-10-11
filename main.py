@@ -18,11 +18,19 @@ class Papel:
     def quantidade(self) -> int:
         qtd = 0
         for compra in self._lista_de_compras:
-            print(compra)
             qtd += compra.quantidade
         for venda in self._lista_de_vendas:
             qtd -= venda.quantidade
         return qtd
+    
+    @property
+    def preco_medio(self) -> Decimal:
+        valor_das_operacoes = 0
+        for compra in self._lista_de_compras:
+            valor_das_operacoes += compra.valor_da_operacao
+        # for venda in self._lista_de_vendas:
+        #     valor_das_operacoes -= venda.valor_da_operacao
+        return valor_das_operacoes/self.quantidade
 
 
 class Operacao(ABC):
@@ -31,7 +39,7 @@ class Operacao(ABC):
             self, papel: Papel, quantidade: int, valor_unitario: Decimal, liquidacao: Decimal,
             negociacao: Decimal, corretagem: Decimal, data: datetime) -> None:
         self._papel = papel
-        self._quantidade = quantidade
+        self._quantidade = quantidade   #TODO: check quantidade =/ 0
         self._valor_unitario = valor_unitario
         self._liquidacao = liquidacao
         self._negociacao = negociacao
@@ -44,6 +52,10 @@ class Operacao(ABC):
     @property
     def quantidade(self) -> int:
         return self._quantidade
+    
+    @property
+    def valor_da_operacao(self) -> int:
+        return self._valor_da_operacao
 
     @abstractmethod
     def calcula_valor_da_operacao(self):
@@ -81,6 +93,7 @@ if __name__ == "__main__":
     a.executa_operacao()
     print(prio3._lista_de_compras)
     print(prio3.quantidade)
-    b = Venda(prio3,3,Decimal("30.00"),Decimal("0"),Decimal("0"),Decimal("4.5"),30)
-    b.executa_operacao()
+    # b = Venda(prio3,5,Decimal("60.00"),Decimal("0"),Decimal("0"),Decimal("4.5"),30)
+    # b.executa_operacao()
     print(prio3.quantidade)
+    print(prio3.preco_medio)
