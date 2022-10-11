@@ -8,43 +8,15 @@ from abc import ABC, abstractmethod
 from decimal import Decimal
 import datetime
 
-class Operacao(ABC):
-
-    def __init__(
-            self, quantidade: int, valor_unitario: Decimal, liquidacao: Decimal,
-            negociacao: Decimal, corretagem: Decimal, data: datetime) -> None:
-        self._quantidade = quantidade
-        self._valor_unitario = valor_unitario
-        self._liquidacao = liquidacao
-        self._negociacao = negociacao
-        self._corretagem = corretagem
-        self._data = data
-        self._taxas = self._liquidacao + self._negociacao + self._corretagem
-        self._valor_da_operacao = self.calcula_valor_da_operacao()
-        self._preco_medio = self._valor/self._quantidade
-
-    @abstractmethod
-    def calcula_valor_da_operacao(self):
-        pass
-
-class Compra(Operacao):
-
-    def calcula_valor_da_operacao(self):
-        return self._valor_unitario*self._quantidade + self._taxas
-
-class Venda(Operacao):
-
-    def calcula_valor_da_operacao(self):
-        return self._valor_unitario*self._quantidade - self._taxas
 
 class Papel:
 
     # constructor
     def __init__(self, nome: str) -> None:
-        self.__nome = nome.strip().upper()
-        self.__quantidade = 0
-        self.__lista_de_compras = []
-        self.__lista_de_vendas = []
+        self._nome = nome.strip().upper()
+        self._quantidade = 0
+        self._lista_de_compras = []
+        self._lista_de_vendas = []
         #TODO: check if exists
 
     def _checar_existencia_do_papel(self) -> bool:
@@ -69,7 +41,50 @@ class Papel:
     #lista de operaçoes compra e venda
 
 
+class Operacao(ABC):
+
+    def __init__(
+            self, papel: Papel, quantidade: int, valor_unitario: Decimal, liquidacao: Decimal,
+            negociacao: Decimal, corretagem: Decimal, data: datetime) -> None:
+        self._papel = papel
+        self._quantidade = quantidade
+        self._valor_unitario = valor_unitario
+        self._liquidacao = liquidacao
+        self._negociacao = negociacao
+        self._corretagem = corretagem
+        self._data = data
+        self._taxas = self._liquidacao + self._negociacao + self._corretagem
+        self._valor_da_operacao = self.calcula_valor_da_operacao()
+        self._preco_medio = self._valor_da_operacao/self._quantidade
+
+    @abstractmethod
+    def calcula_valor_da_operacao(self):
+        pass
+
+    @abstractmethod
+    def executa_operacao(self):
+        pass
+
+class Compra(Operacao):
+
+    def calcula_valor_da_operacao(self):
+        return self._valor_unitario*self._quantidade + self._taxas
+    
+    def executa_operacao(self):
+        self._papel._lista_de_compras.append(self)
+        return
+
+class Venda(Operacao):
+
+    def calcula_valor_da_operacao(self):
+        return self._valor_unitario*self._quantidade - self._taxas
+
+
 if __name__ == "__main__":
 
     prio3 = Papel("prio3")
     print(prio3)
+    a = Compra(prio3,2,Decimal("30.00"),Decimal("0"),Decimal("0"),Decimal("4.5"),30)
+    print(prio3._lista_de_compras)
+    a.executa_operacao()
+    print(prio3._lista_de_compras)
