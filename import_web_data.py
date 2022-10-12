@@ -1,17 +1,6 @@
-#https://reulison.com.br/web-scraping-python/
-
-#importe a biblioteca usada para consultar uma URL
-import urllib.request
-
-#importe as funções BeautifulSoup para analisar os dados retornados do site
-from bs4 import BeautifulSoup
-
-#especifique o URL
-wiki = "https://sistemaswebb3-listados.b3.com.br/listedCompaniesPage/main/19348/ITUB/corporate-actions?language=pt-br"
-
-#Consulte o site e retorne o html para a variável 'page'
-page = urllib.request.urlopen(wiki)
-
-#Parse o html na variável 'page' e armazene-o no formato BeautifulSoup
-soup = BeautifulSoup(page, 'html5lib')
-
+import json
+site = "https://sistemaswebb3-listados.b3.com.br/listedCompaniesProxy/CompanyCall/GetListedSupplementCompany/eyJpc3N1aW5nQ29tcGFueSI6IklUVUIiLCJsYW5ndWFnZSI6InB0LWJyIn0="
+with open("test.json") as f:
+    data=json.load(f)
+for provento in data[0]["cashDividends"]:
+    print(provento)
