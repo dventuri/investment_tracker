@@ -16,34 +16,10 @@ class Papel:
     def _checar_existencia_do_papel(self) -> bool:
         pass
 
-    def _preco_medio(self) -> Decimal:
+    def _calcula_preco_medio(self) -> Decimal:
         if(self._quantidade > 0):
             return self._montante/self._quantidade
         return Decimal("0")
-
-    def _quantidade_comprada(self) -> int:
-        qtd = 0
-        for compra in self._lista_de_compras:
-            qtd += compra.quantidade
-        return qtd
-
-    def _quantidade_vendida(self) -> int:
-        qtd = 0
-        for venda in self._lista_de_vendas:
-            qtd -= venda.quantidade
-        return qtd
-
-    def _valor_comprado(self) -> Decimal:
-        valor = 0
-        for compra in self._lista_de_compras:
-            valor += compra.valor_da_operacao
-        return valor
-
-    def _valor_vendido(self) -> Decimal:
-        valor = 0
-        for venda in self._lista_de_vendas:
-            valor += venda.valor_da_operacao
-        return valor
 
     @property
     def quantidade(self) -> int:
@@ -55,7 +31,8 @@ class Papel:
 
     @property
     def preco_medio(self) -> Decimal:
-        return self._preco_medio
+        self._preco_medio = self._calcula_preco_medio()
+        return round(self._preco_medio, 2)              # Esse é o melhor lugar para fazer o arredondamento?
 
 
 class Operacao(ABC):
@@ -107,7 +84,7 @@ class Venda(Operacao):
         return self._valor_unitario*self._quantidade - self._taxas
 
     def executa_operacao(self):
-        self._papel._montante *= (1-self._quantidade/self._papel._quantidade)
+        self._papel._montante *= (Decimal(1)-Decimal(self._quantidade)/Decimal(self._papel._quantidade))
         self._papel._quantidade -= self._quantidade
         self._papel._lista_de_vendas.append(self)
         return
@@ -116,13 +93,18 @@ class Venda(Operacao):
 if __name__ == "__main__":
 
     prio3 = Papel("prio3")
-    print(prio3)
     a = Compra(prio3,10,Decimal("30.00"),Decimal("0"),Decimal("0"),Decimal("4.5"),30)
-    print(prio3._lista_de_compras)
     a.executa_operacao()
-    print(prio3._lista_de_compras)
-    print(prio3.quantidade)
-    # b = Venda(prio3,5,Decimal("60.00"),Decimal("0"),Decimal("0"),Decimal("4.5"),30)
-    # b.executa_operacao()
-    print(prio3.quantidade)
     print(prio3.preco_medio)
+    print(prio3.quantidade)
+    print(prio3.montante)
+    b = Venda(prio3,5,Decimal("60.00"),Decimal("0"),Decimal("0"),Decimal("4.5"),30)
+    b.executa_operacao()
+    print(prio3.preco_medio)
+    print(prio3.quantidade)
+    print(prio3.montante)
+    c = Compra(prio3,100,Decimal("50.00"),Decimal("0"),Decimal("0"),Decimal("4.5"),30)
+    c.executa_operacao()
+    print(prio3.preco_medio)
+    print(prio3.quantidade)
+    print(prio3.montante)
