@@ -8,11 +8,18 @@ class Papel:
     # constructor
     def __init__(self, nome: str) -> None:
         self._nome = nome.strip().upper()
+        self._quantidade = int(0)
+        self._montante = Decimal("0")
         self._lista_de_compras = []
         self._lista_de_vendas = []
 
     def _checar_existencia_do_papel(self) -> bool:
         pass
+
+    def _preco_medio(self) -> Decimal:
+        if(self._quantidade > 0):
+            return self._montante/self._quantidade
+        return Decimal("0")
 
     def _quantidade_comprada(self) -> int:
         qtd = 0
@@ -40,13 +47,15 @@ class Papel:
 
     @property
     def quantidade(self) -> int:
-        qtd = self._quantidade_comprada() - self._quantidade_vendida()
-        return qtd
+        return self._quantidade
+
+    @property
+    def montante(self) -> int:
+        return self._montante
 
     @property
     def preco_medio(self) -> Decimal:
-        preco = self._valor_comprado()/self._quantidade_comprada()
-        return preco
+        return self._preco_medio
 
 
 class Operacao(ABC):
@@ -87,6 +96,8 @@ class Compra(Operacao):
         return self._valor_unitario*self._quantidade + self._taxas
 
     def executa_operacao(self):
+        self._papel._montante += self._valor_da_operacao
+        self._papel._quantidade += self._quantidade
         self._papel._lista_de_compras.append(self)
         return
 
@@ -96,6 +107,8 @@ class Venda(Operacao):
         return self._valor_unitario*self._quantidade - self._taxas
 
     def executa_operacao(self):
+        self._papel._montante *= (1-self._quantidade/self._papel._quantidade)
+        self._papel._quantidade -= self._quantidade
         self._papel._lista_de_vendas.append(self)
         return
 
