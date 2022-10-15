@@ -38,15 +38,16 @@ class Papel:
 class Operacao(ABC):
 
     def __init__(
-            self, papel: Papel, quantidade: int, valor_unitario: Decimal, liquidacao: Decimal,
-            negociacao: Decimal, corretagem: Decimal, data: datetime) -> None:
+            self, id_nota: int, data: datetime, papel: Papel, quantidade: int, valor_unitario: Decimal,
+            liquidacao: Decimal, negociacao: Decimal, corretagem: Decimal, ISS: Decimal) -> None:
+        self._id_nota = id_nota
+        self._data = data
         self._papel = papel
-        self._quantidade = quantidade   #TODO: check quantidade =/ 0
+        self._quantidade = quantidade
         self._valor_unitario = valor_unitario
         self._liquidacao = liquidacao
         self._negociacao = negociacao
         self._corretagem = corretagem
-        self._data = data
         self._taxas = self._liquidacao + self._negociacao + self._corretagem
         self._valor_da_operacao = self.calcula_valor_da_operacao()
         self._preco_medio = self._valor_da_operacao/self._quantidade
@@ -88,6 +89,30 @@ class Venda(Operacao):
         self._papel._quantidade -= self._quantidade
         self._papel._lista_de_vendas.append(self)
         return
+
+
+class CalculadoraDeTaxas:
+
+    def __init__(self, id_nota: int) -> None:
+        pass
+
+
+class Nota:
+
+    def __init__(self, id_nota: int, data: datetime.date, taxas) -> None:
+        pass
+
+
+class LeitorDeNota:
+
+    def __init__(self) -> None:
+        pass
+
+
+class LeitorDeDarf:
+
+    def __init__(self) -> None:
+        pass
 
 
 if __name__ == "__main__":
