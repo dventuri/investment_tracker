@@ -38,7 +38,7 @@ class Papel:
 class Operacao(ABC):
 
     def __init__(
-            self, id_nota: int, data: datetime, papel: Papel, quantidade: int, valor_unitario: Decimal,
+            self, id_nota: str, data: datetime.date, papel: Papel, quantidade: int, valor_unitario: Decimal,
             liquidacao: Decimal, negociacao: Decimal, corretagem: Decimal, ISS: Decimal) -> None:
         self._id_nota = id_nota
         self._data = data
