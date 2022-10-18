@@ -13,6 +13,9 @@ class Papel:
         self._lista_de_compras = []
         self._lista_de_vendas = []
 
+    def __eq__(self, other):
+        return (self._nome) == (other._nome)
+
     def _checar_existencia_do_papel(self) -> bool:
         pass
 
