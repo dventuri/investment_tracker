@@ -31,7 +31,7 @@ linha = text.splitlines(True)[26].split()
 kind = "compra" if linha[1] == "CVISTA" else "venda"
 papel = linha[2]
 quantidade = int(linha[3])
-preco_unitario = Decimal(linha[4])
+preco_unitario = Decimal(linha[4].replace(",", "."))
 
 #nova linha será o número da última acima + x, no caso atual:
 liquidacao = Decimal(text.splitlines(True)[38].split()[0].replace(",", "."))
