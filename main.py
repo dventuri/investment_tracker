@@ -1,6 +1,22 @@
 from abc import ABC, abstractmethod
 from decimal import Decimal
-import datetime
+
+FII =[
+    'BCFF11', 'XPLG11', 'RBFF11', 'MGFF11', 'SDIL11', 'BRCO11',
+    'RBRR11', 'XPML11', 'KNSC11', 'HSML11', 'KNCR11', 'RBRP11',
+    'HSLG11', 'BRCR11', 'BTLG11', 'PVBI11', 'RCRB11', 'VILG11',
+    'KNRI11'
+]
+
+ACAO = [
+    'BRSR6', 'DMVF3', 'ITSA4', 'LCAM3', 'MRVE3', 'PRIO3', 'PARD3',
+    'BPAC11', 'ITUB3', 'MOVI3', 'RENT3', 'HYPE3', 'TTEN3', 'TUPY3',
+    'MILS3'
+]
+
+BDR = ['XPBR31']
+
+ETF = ['IVVB11']
 
 
 class Papel:
