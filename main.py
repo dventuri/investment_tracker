@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 from decimal import Decimal
+import datetime as dt
 
 FII =[
     'BCFF11', 'XPLG11', 'RBFF11', 'MGFF11', 'SDIL11', 'BRCO11',
@@ -57,7 +58,7 @@ class Papel:
 class Operacao(ABC):
 
     def __init__(
-            self, id_nota: str, data: datetime.date, papel: Papel, quantidade: int, valor_unitario: Decimal,
+            self, id_nota: str, data: dt.date, papel: Papel, quantidade: int, valor_unitario: Decimal,
             liquidacao: Decimal, negociacao: Decimal, corretagem: Decimal, ISS: Decimal) -> None:
         self._id_nota = id_nota
         self._data = data
@@ -118,7 +119,7 @@ class CalculadoraDeTaxas:
 
 class Nota:
 
-    def __init__(self, id_nota: int, data: datetime.date, taxas) -> None:
+    def __init__(self, id_nota: int, data: dt.date, taxas) -> None:
         pass
 
 
